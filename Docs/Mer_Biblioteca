@@ -1,1 +1,41 @@
+Table Livro {
+  codigo_identificacao int [primary key, increment, note: 'Código único de identificação do livro']
+  titulo varchar [not null]
+  autor varchar [not null]
+  ano_publicacao int [not null]
+}
 
+Table Exemplar {
+  id_exemplar int [primary key, increment, not null]
+  codigo_identificacao int [not null]
+  numero_de_exemplar int [not null]
+}
+
+Table Cliente {
+  id_cliente int [primary key, increment, not null]
+  nome varchar [not null]
+  endereco varchar [not null]
+  telefone varchar
+}
+
+Table Emprestimo {
+  id_emprestimo int [primary key, increment, not null]
+  id_cliente int [not null]
+  id_exemplar int [not null]
+  data_emprestimo date
+  data_prevista_devolucao date
+  data_devolucao_real date [null, note: 'Fica em branco/nulo até o livro ser devolvido']
+}
+
+
+// Relacionamentos
+
+
+// Um Livro pode ter vários Exemplares (1:N)
+Ref: Livro.codigo_identificacao < Exemplar.codigo_identificacao
+
+// Um Cliente pode fazer vários Empréstimos (1:N)
+Ref: Cliente.id_cliente < Emprestimo.id_cliente
+
+// Um Exemplar pode estar em vários Empréstimos ao longo do tempo (1:N)
+Ref: Exemplar.id_exemplar < Emprestimo.id_exemplar
